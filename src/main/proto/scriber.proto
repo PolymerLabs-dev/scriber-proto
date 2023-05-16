@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/struct.proto";
+
+package scriber;
+option java_package = "com.polymerlabs.scriber";
+
+// Logging level definitions
+enum LogLevel {
+  DEBUG = 0;
+  INFO = 1;
+  WARN = 2;
+  ERROR = 3;
+  FATAL = 4;
+}
+
+// Describes details of the application for a log
+message ApplicationDetails {
+  // GUID for the application
+  string applicationId = 1;
+  // Application version
+  string version = 2;
+}
+
+// Describes details of the client for a log
+message ClientDetails {
+  // GUID for the application
+  string clientId = 1;
+}
+
+// Request message to create a new log
+message CreateLogRequest {
+  // Details of the client application
+  ApplicationDetails application = 1;
+  // GUID for the client
+  ClientDetails client = 2;
+  // Logging level
+  LogLevel level = 3;
+  // Source class or file name
+  string source = 4;
+  // Log message
+  string message = 5;
+  // Stack trace, if available
+  string trace = 6;
+  // Optional metadata
+  google.protobuf.Struct metadata = 7;
+  // Time this log was reported
+  google.protobuf.Timestamp reportedTime = 99;
+}

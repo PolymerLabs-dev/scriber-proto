@@ -1,0 +1,5 @@
+
+package scriber;
+option java_package = "com.polymerlabs.scriber";
+
+
