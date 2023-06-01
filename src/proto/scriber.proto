@@ -1,9 +1,11 @@
 syntax = "proto3";
 
+import "google/protobuf/wrappers.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/struct.proto";
+import "google/protobuf/empty.proto";
 
-package com.polymerlabs.scriber.client;
+package com.polymerlabs.scriber;
 
 // Logging level definitions
 enum Level {
@@ -17,15 +19,15 @@ enum Level {
 // Describes details of the application for a log
 message Application {
   // UUID for the application
-  string applicationUuid = 1;
+  google.protobuf.StringValue application_uuid = 1;
   // Application version
-  string version = 2;
+  google.protobuf.StringValue version = 2;
 }
 
 // Describes details of the client for a log
 message Client {
   // UUID for the application
-  string clientUuid = 1;
+  google.protobuf.StringValue client_uuid = 1;
 }
 
 // Request message to create a new log
@@ -37,15 +39,15 @@ message PushLogRequest {
   // Logging level
   Level level = 3;
   // Source class or file name
-  string source = 4;
+  google.protobuf.StringValue source = 4;
   // Log message
-  string message = 5;
+  google.protobuf.StringValue message = 5;
   // Stack trace, if available
-  string trace = 6;
+  google.protobuf.StringValue trace = 6;
   // Optional metadata
   google.protobuf.Struct metadata = 7;
   // Time this log was reported
-  google.protobuf.Timestamp reportedTime = 8;
+  google.protobuf.Timestamp reported_time = 8;
 }
 
 // Message request to create a new wave log
@@ -55,5 +57,12 @@ message PushWaveRequest {
   // GUID for the client
   Client client = 2;
   // Time this log was reported
-  google.protobuf.Timestamp reportedTime = 3;
+  google.protobuf.Timestamp reported_time = 3;
+}
+
+service ScriberApi {
+  // Push a new log to the server.
+  rpc pushLog(PushLogRequest) returns (google.protobuf.Empty);
+  // Push a new wave to the server.
+  rpc pushWave(PushWaveRequest) returns (google.protobuf.Empty);
 }
